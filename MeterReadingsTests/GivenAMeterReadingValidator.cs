@@ -12,12 +12,12 @@ public class GivenAMeterReadingValidator
     private readonly IRepository<Account> _accountRepository = new AccountsListRepository();
 
     private readonly MeterReadingUploadRequest _invalidUserIdRequest = new(){ AccountId = 100000, MeterReadingDateTime = DateTime.Now, MeterReadValue = "12345" };
+    private readonly MeterReadingUploadRequest validMeterReading = new() { AccountId = 1, MeterReadingDateTime = DateTime.Now, MeterReadValue = "12345" };
 
     public GivenAMeterReadingValidator()
     {
-        _sut = new MeterReadingValidator(_accountRepository);
-
         SeedDatabase(_accountRepository);
+        _sut = new MeterReadingValidator(_accountRepository);
     }
 
     private static void SeedDatabase(IRepository<Account> accountRepository)
@@ -37,5 +37,22 @@ public class GivenAMeterReadingValidator
 
         Assert.False(result.IsValid);
         Assert.True(result.Errors.Exists(x => x.PropertyName == nameof(MeterReadingUploadRequest.AccountId)));
+    }
+
+    [Theory]
+    [InlineData("1")]
+    [InlineData("-6575")]
+    [InlineData("323")]
+    [InlineData("999999")]
+    [InlineData("0")]
+    [InlineData("676")]
+    public void WhenAnInvalidMeterReadingIsEncountered_ThenValidationErrorIsRaise(string invalidMeterReadingValue)
+    {
+        MeterReadingUploadRequest invalidMeterReading = new() { AccountId = 1, MeterReadingDateTime = DateTime.Now, MeterReadValue = invalidMeterReadingValue };
+
+        var result = _sut.Validate(invalidMeterReading);
+
+        Assert.False(result.IsValid);
+        Assert.True(result.Errors.Exists(x => x.PropertyName == nameof(MeterReadingUploadRequest.MeterReadValue)));
     }
 }

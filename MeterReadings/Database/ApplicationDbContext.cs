@@ -11,4 +11,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         base.OnConfiguring(optionsBuilder);
     }
     public DbSet<Account> Accounts { get; set; }
+
+    public DbSet<MeterReading> MeterReadings { get; set; }
 }

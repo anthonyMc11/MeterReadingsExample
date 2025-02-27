@@ -7,7 +7,7 @@ public record CsvImportResult(int Successful, int Failures);
 
 public class MeterReadingService(IMeterReadingValidator validator) : IMeterReadingService
 {
-    public Task<CsvImportResult> ProcessCsvImport(IFormFile file)
+    public CsvImportResult ProcessCsvImport(IFormFile file)
     {
         var records = GetRecords(file);
         return ProcessRecords(records);
@@ -27,7 +27,7 @@ public class MeterReadingService(IMeterReadingValidator validator) : IMeterReadi
 
     }
 
-    private async Task<CsvImportResult> ProcessRecords(FrozenSet<MeterReadingUploadRequest> records)
+    private CsvImportResult ProcessRecords(FrozenSet<MeterReadingUploadRequest> records)
     {
         int successful = 0;
         int failure = 0;
@@ -64,5 +64,5 @@ public class MeterReadingService(IMeterReadingValidator validator) : IMeterReadi
 
 public interface IMeterReadingService
 {
-    public Task<CsvImportResult> ProcessCsvImport(IFormFile file);
+    public CsvImportResult ProcessCsvImport(IFormFile file);
 }

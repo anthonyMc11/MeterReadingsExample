@@ -6,4 +6,3 @@ public class MeterReadingUploadRequest()
     public DateTime MeterReadingDateTime { get; set; }
     public string MeterReadValue { get; set; } = "";
 }
-

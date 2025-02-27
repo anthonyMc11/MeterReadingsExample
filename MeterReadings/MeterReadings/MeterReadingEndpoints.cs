@@ -8,16 +8,9 @@ public static class MeterReadingEndpoints
     {
         var group = app.MapGroup("meter-readings");
 
-        group.MapPost("/meter-reading-uploads", async (IMeterReadingService meterReadingService, IFormFile csvFile ) => { 
-            if(csvFile is null)
-            {
-                return Results.BadRequest();
-            }
-            else
-            {
-                var result = await meterReadingService.ProcessCsvImport(csvFile);
-                return Results.Ok(result.MapToUploadResponse());
-            }
+        group.MapPost("/meter-reading-uploads", static (IMeterReadingService meterReadingService, IFormFile csvFile ) => {
+            var result = meterReadingService.ProcessCsvImport(csvFile);
+            return Results.Ok(result.MapToUploadResponse());
         })
         .DisableAntiforgery();
     }
