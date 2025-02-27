@@ -1,4 +1,9 @@
 ﻿namespace MeterReadings.Contracts.Requests;
 
-public record MeterReadingUploadRequest(int AccountId, DateTime MeterReadingDateTime, string MeterReadValue);
+public class MeterReadingUploadRequest()
+{
+    public int AccountId { get; set; } 
+    public DateTime MeterReadingDateTime { get; set; }
+    public string MeterReadValue { get; set; } = "";
+}
 

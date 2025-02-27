@@ -7,4 +7,16 @@ public class Account{
 
     public string FirstName { get; set; } = "";
     public string LastName { get; set; } = "";
+
+    public Account()
+    {
+
+    }
+
+    public Account(int id, string firstName, string lastName)
+    {
+        Id = id;
+        FirstName = firstName;
+        LastName = lastName;
+    }
     }

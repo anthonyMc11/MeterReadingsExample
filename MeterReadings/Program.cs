@@ -1,6 +1,7 @@
 using FluentValidation;
 using MeterReadings.Database;
-using MeterReadings.MeterReadings;
+using MeterReadings.Migrations;
+using MeterReadings.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +29,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                    );
 
 builder.Services.AddScoped<IMeterReadingService, MeterReadingService>();
+builder.Services.AddSingleton<IRepository<Account>, AccountsListRepository>();
+builder.Services.AddSingleton<IMeterReadingValidator, MeterReadingValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 
 var app = builder.Build();
+
+var foo = app.Services.GetRequiredService<IRepository<Account>>();
+
+AccountsDatabaseSeed.SeedDatabase(foo);
 
 app.MapMeterReadingEndpoints();
 

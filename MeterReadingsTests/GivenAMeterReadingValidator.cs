@@ -1,0 +1,41 @@
+﻿using MeterReadings.Domain;
+using MeterReadings.MeterReadings;
+using MeterReadings.Repositories;
+using MeterReadings.Contracts.Requests;
+
+namespace MeterReadingsTests;
+
+public class GivenAMeterReadingValidator
+{
+    private readonly MeterReadingValidator _sut;
+    //TODO: this list implementation would move to the test project once the database version is completed
+    private readonly IRepository<Account> _accountRepository = new AccountsListRepository();
+
+    private readonly MeterReadingUploadRequest _invalidUserIdRequest = new(){ AccountId = 100000, MeterReadingDateTime = DateTime.Now, MeterReadValue = "12345" };
+
+    public GivenAMeterReadingValidator()
+    {
+        _sut = new MeterReadingValidator(_accountRepository);
+
+        SeedDatabase(_accountRepository);
+    }
+
+    private static void SeedDatabase(IRepository<Account> accountRepository)
+    {
+        accountRepository.Add(new( 1, "bob", "test" ));
+        accountRepository.Add(new( 2, "bob", "test" ));
+        accountRepository.Add(new( 3, "bob", "test" ));
+        accountRepository.Add(new( 4, "bob", "test" ));
+        accountRepository.Add(new( 5, "bob", "test" ));
+        accountRepository.Add(new( 6, "bob", "test" ));
+    }
+
+    [Fact]
+    public void WhenAnUnknownAccountIsEncountered_ThenValidationErrorIsRaise()
+    {
+        var result = _sut.Validate(_invalidUserIdRequest);
+
+        Assert.False(result.IsValid);
+        Assert.True(result.Errors.Exists(x => x.PropertyName == nameof(MeterReadingUploadRequest.AccountId)));
+    }
+}
