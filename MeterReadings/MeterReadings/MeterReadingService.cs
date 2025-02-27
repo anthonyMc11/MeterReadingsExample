@@ -20,10 +20,18 @@ public class MeterReadingService(IMeterReadingValidator validator) : IMeterReadi
         ms.Seek(0, SeekOrigin.Begin);
 
         using var reader = new StreamReader(ms);
-        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-
+        using var csv = new CsvReader(reader, GetCsvConfiguration());
+       
         csv.Context.RegisterClassMap<MeterReadingUploadRequestMap>();
-        return csv.GetRecords<MeterReadingUploadRequest>().ToFrozenSet();
+        try
+        {
+            return csv.GetRecords<MeterReadingUploadRequest>().ToFrozenSet();
+        }
+        catch(HeaderValidationException)
+        {
+         //  an invalid file was uploaded
+        }
+        return FrozenSet<MeterReadingUploadRequest>.Empty;
     }
 
     private CsvImportResult ProcessRecords(FrozenSet<MeterReadingUploadRequest> records)
@@ -48,6 +56,18 @@ public class MeterReadingService(IMeterReadingValidator validator) : IMeterReadi
         return new CsvImportResult(successful, failure);
     }
 
+
+    private static CsvConfiguration GetCsvConfiguration(){
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            BadDataFound = null, // protects against invalid file uploads
+            ReadingExceptionOccurred = re =>
+            {
+                return false;
+            }
+        };
+        return config;
+    }
     private class MeterReadingUploadRequestMap : ClassMap<MeterReadingUploadRequest>
     {
         public MeterReadingUploadRequestMap()
