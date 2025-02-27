@@ -7,10 +7,12 @@ namespace MeterReadingsTests
     public class GivenAMeterReadingService
     {
         public IMeterReadingService _sut;
+        public Mock<IMeterReadingValidator> _validator = new();
 
         public GivenAMeterReadingService()
         {
-            _sut = new MeterReadingService();
+        
+            _sut = new MeterReadingService(_validator.Object);
         }
         [Fact]
         public void WhenAFileIsUploaded_ThenAResultIsReturned()

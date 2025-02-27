@@ -5,7 +5,7 @@ namespace MeterReadings.MeterReadings;
 
 public record CsvImportResult(int Successful, int Failures);
 
-public class MeterReadingService : IMeterReadingService
+public class MeterReadingService(IMeterReadingValidator validator) : IMeterReadingService
 {
     public Task<CsvImportResult> ProcessCsvImport(IFormFile file)
     {
@@ -34,8 +34,16 @@ public class MeterReadingService : IMeterReadingService
 
        foreach(var record in records)
         {
-            successful++;
+            var validationResult = validator.Validate(record);
 
+            if (validationResult.IsValid)
+            {
+                successful++;
+            }
+            else
+            {
+                failure++;
+            } 
         }
 
         return new CsvImportResult(successful, failure);
