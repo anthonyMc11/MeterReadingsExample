@@ -1,6 +1,5 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-using MeterReadings.Repositories;
 
 namespace MeterReadings.Database.SeedData
 {
