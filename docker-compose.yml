@@ -1,0 +1,6 @@
+services:
+  meterreadings:
+    image: ${DOCKER_REGISTRY-}meterreadings
+    build:
+      context: .
+      dockerfile: MeterReadings/Dockerfile
