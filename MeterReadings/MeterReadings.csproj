@@ -24,7 +24,6 @@
     <Folder Include="Contracts\Responses\" />
     <Folder Include="Contracts\Requests\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Validation\" />
   </ItemGroup>
 
   <ItemGroup>
