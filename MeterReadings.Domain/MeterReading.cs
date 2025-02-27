@@ -1,7 +1,4 @@
 ﻿namespace MeterReadings.Domain
 {
-    public class MeterReading
-    {
-
-    }
+    public record MeterReading(int AccountId, DateTime MeterReadingDateTime, string MeterReadingValue);
 }
