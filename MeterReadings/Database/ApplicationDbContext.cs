@@ -4,5 +4,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {       
-    }  
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+    }
+    public DbSet<Account> Accounts { get; set; }
 }
