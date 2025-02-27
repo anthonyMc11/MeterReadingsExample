@@ -2,7 +2,7 @@
 using CsvHelper.Configuration;
 using MeterReadings.Repositories;
 
-namespace MeterReadings.Migrations
+namespace MeterReadings.Database.SeedData
 {
     public static class AccountsDatabaseSeed
     {

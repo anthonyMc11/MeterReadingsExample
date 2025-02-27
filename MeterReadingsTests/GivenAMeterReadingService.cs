@@ -11,9 +11,9 @@ namespace MeterReadingsTests
 
         public GivenAMeterReadingService()
         {
-        
             _sut = new MeterReadingService(_validator.Object);
         }
+
         [Fact]
         public void WhenAFileIsUploaded_ThenAResultIsReturned()
         {

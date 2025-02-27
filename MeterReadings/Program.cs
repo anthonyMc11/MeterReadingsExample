@@ -1,7 +1,4 @@
 using FluentValidation;
-using MeterReadings.Database;
-using MeterReadings.Migrations;
-using MeterReadings.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,12 +9,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                    options
+                       
+                   #if DEBUG
                        .UseSeeding((context, _) => {
                            //add seeding logic here
                        } )
                        .UseAsyncSeeding(async (context, _, cancellationToken) => {
+                           await Task.CompletedTask;
                            //add duplicate seeding logic here
-                       })
+                       })   
+                   #endif
                        .UseSqlServer(builder.Configuration["ConnectionString"],
                        sqlServerOptionsAction: sqlOptions =>
                        {
@@ -33,12 +34,12 @@ builder.Services.AddSingleton<IRepository<Account>, AccountsListRepository>();
 builder.Services.AddSingleton<IMeterReadingValidator, MeterReadingValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-
 var app = builder.Build();
 
-var foo = app.Services.GetRequiredService<IRepository<Account>>();
-
-AccountsDatabaseSeed.SeedDatabase(foo);
+//required until seeding sql Server is completed
+#if DEBUG
+    AccountsDatabaseSeed.SeedDatabase(app.Services.GetRequiredService<IRepository<Account>>());
+#endif
 
 app.MapMeterReadingEndpoints();
 
