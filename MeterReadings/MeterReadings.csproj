@@ -23,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Contracts\Responses\" />
     <Folder Include="Contracts\Requests\" />
-    <Folder Include="Database\" />
     <Folder Include="Migrations\" />
     <Folder Include="Validation\" />
   </ItemGroup>
