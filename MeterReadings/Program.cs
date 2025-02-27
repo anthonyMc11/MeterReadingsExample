@@ -1,4 +1,6 @@
+using FluentValidation;
 using MeterReadings.Database;
+using MeterReadings.MeterReadings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +27,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
          
                    );
 
+builder.Services.AddScoped<IMeterReadingService, MeterReadingService>();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+
 var app = builder.Build();
+
+app.MapMeterReadingEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -33,10 +41,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.MapGet("/", () => {  
-    return Results.Ok("Hello world");
-});
 
 
 app.Run();
