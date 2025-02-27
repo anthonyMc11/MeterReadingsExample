@@ -24,7 +24,6 @@ public class MeterReadingService(IMeterReadingValidator validator) : IMeterReadi
 
         csv.Context.RegisterClassMap<MeterReadingUploadRequestMap>();
         return csv.GetRecords<MeterReadingUploadRequest>().ToFrozenSet();
-
     }
 
     private CsvImportResult ProcessRecords(FrozenSet<MeterReadingUploadRequest> records)
