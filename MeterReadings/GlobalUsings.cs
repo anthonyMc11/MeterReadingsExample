@@ -12,5 +12,3 @@ global using MeterReadings.Database.SeedData;
 global using MeterReadings.Domain;
 global using MeterReadings.MeterReadings;
 global using MeterReadings.Repositories;
-
-

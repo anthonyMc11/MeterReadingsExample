@@ -51,5 +51,4 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.Run();
-
+await app.RunAsync();

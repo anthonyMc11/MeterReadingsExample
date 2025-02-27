@@ -2,6 +2,7 @@
 using MeterReadings.MeterReadings;
 using MeterReadings.Repositories;
 using MeterReadings.Contracts.Requests;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MeterReadingsTests;
 
@@ -28,6 +29,15 @@ public class GivenAMeterReadingValidator
         accountRepository.Add(new( 4, "bob", "test" ));
         accountRepository.Add(new( 5, "bob", "test" ));
         accountRepository.Add(new( 6, "bob", "test" ));
+    }
+
+    [Fact]
+    public void WhenAValidMeterReading_ThenNoValidationErrors()
+    {
+        var result = _sut.Validate(validMeterReading);
+
+        Assert.True(result.IsValid);
+        Assert.True(result.Errors.IsNullOrEmpty());
     }
 
     [Fact]
