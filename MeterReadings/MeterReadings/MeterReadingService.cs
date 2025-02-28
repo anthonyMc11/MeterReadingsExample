@@ -56,9 +56,8 @@ public class MeterReadingService(IMeterReadingValidator validator) : IMeterReadi
         return new CsvImportResult(successful, failure);
     }
 
-
-    private static CsvConfiguration GetCsvConfiguration(){
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+    private static CsvConfiguration GetCsvConfiguration() => 
+        new (CultureInfo.InvariantCulture)
         {
             BadDataFound = null, // protects against invalid file uploads
             ReadingExceptionOccurred = re =>
@@ -66,8 +65,7 @@ public class MeterReadingService(IMeterReadingValidator validator) : IMeterReadi
                 return false;
             }
         };
-        return config;
-    }
+
     private class MeterReadingUploadRequestMap : ClassMap<MeterReadingUploadRequest>
     {
         public MeterReadingUploadRequestMap()
